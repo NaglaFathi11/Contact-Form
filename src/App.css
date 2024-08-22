@@ -181,13 +181,13 @@ textarea.inputError {
     top: 140px;
     opacity: 0;
     animation-name: success;
-    animation-duration: 2s;
+    animation-duration: 3s;
 }
 
 
 @keyframes success {
     0% {
-        opacity: 0;
+        opacity: 1;
         transform: translateY(-16px);
     }
 

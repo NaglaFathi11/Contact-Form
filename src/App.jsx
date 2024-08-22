@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as yup from "yup";
 
 function App() {
@@ -85,6 +85,32 @@ function App() {
     const checkValue = event.target.checked;
     setFormInputs({ ...formInputs, isCheck: checkValue });
   }
+
+  // Save data in the db.json file
+  useEffect(() => {
+    const saveData = async () => {
+      if (!isSubmitted) return; // عدم إرسال البيانات إذا لم يتم تقديم النموذج بنجاح
+
+      try {
+        const response = await fetch("http://localhost:3001/formInputsValue", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formInputs),
+        });
+        if (response.ok) {
+          // console.log("Data saved successfully!");
+        } else {
+          console.error("Error saving data!");
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+      }
+    };
+
+    saveData();
+  }, [isSubmitted, formInputs]); // اعتمادًا على isSubmitted بدلاً من formInputs
 
   return (
     <form onSubmit={handleSubmitForm}>
@@ -214,7 +240,7 @@ function App() {
               <img src="/images/icon-success-check.svg" alt="" />
               <h2> Message Sent!</h2>
             </div>
-            <p>Thanks for completing the form. We'll be in touch soon!</p>
+            <p>Thanks for completing the form. We&apos;ll be in touch soon!</p>
           </div>
         </div>
       ) : null}
