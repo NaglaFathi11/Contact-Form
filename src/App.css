@@ -157,6 +157,10 @@ label::after {
     color: #e53935;
 }
 
+label.no-asterisk::after {
+    content: "";
+}
+
 input[type="text"].inputError,
 input[type="email"].inputError,
 textarea.inputError {

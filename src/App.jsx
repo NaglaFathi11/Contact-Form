@@ -173,7 +173,9 @@ function App() {
               />
             )}
 
-            <label htmlFor="generalEnquiry">General Enquiry</label>
+            <label htmlFor="generalEnquiry" className="no-asterisk">
+              General Enquiry
+            </label>
           </div>
           <div id="supportRequest">
             {formInputs.queryType === "Support Request" ? (
@@ -191,7 +193,9 @@ function App() {
               />
             )}
 
-            <label htmlFor="supportRequest">Support Request</label>
+            <label htmlFor="supportRequest" className="no-asterisk">
+              Support Request
+            </label>
           </div>
         </div>
         {errors.queryType ? <p className="error">{errors.queryType}</p> : null}
