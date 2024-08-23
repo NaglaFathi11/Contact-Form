@@ -8,7 +8,7 @@
     margin: 45px 0 60px 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 971px) {
     #root {
         height: auto;
     }

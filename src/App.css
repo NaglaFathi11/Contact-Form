@@ -214,7 +214,7 @@ textarea.inputError {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 971px) {
     form {
         width: 90%;
         box-shadow: none;
