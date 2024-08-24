@@ -38,7 +38,7 @@ function App() {
   const [errors, setErrors] = useState({});
 
   // Submit the form
-  function handleSubmitForm(event) {
+  function handleSubmissionForm(event) {
     event.preventDefault();
     testValdiation();
     console.log(formInputs);
@@ -110,6 +110,7 @@ function App() {
   // }
 
   // Handle Checkbox input value
+
   function handleCheckboxValue(event) {
     const checkValue = event.target.checked;
     setFormInputs({ ...formInputs, isCheck: checkValue });
@@ -141,7 +142,7 @@ function App() {
   }, [isSubmitted, formInputs]);
 
   return (
-    <form onSubmit={handleSubmitForm}>
+    <form onSubmit={handleSubmissionForm}>
       <h1>Contact Us</h1>
       <div id="fullName">
         <div id="firstName">
