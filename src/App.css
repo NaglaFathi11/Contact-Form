@@ -66,14 +66,28 @@ textarea {
     padding: 7px;
     margin-top: 10px;
     margin-bottom: 20px;
-    border: 1px solid var(--grey-500);
+    /* border: 1px solid var(--grey-500); */
     border-radius: 5px;
-    cursor: url("/images/icons8-hand-cursor-35.png"), pointer;
+    cursor: url("/images/icons8-natural-user-interface-2-35.png"), pointer;
 }
 
 input:focus,
 input:hover {
     border: 1px solid var(--green-600);
+}
+
+.first-name,
+.last-Name,
+.email,
+.query-selected,
+.message,
+.check-box {
+    border: 1px solid var(--green-600) !important;
+
+}
+
+.query-selected {
+    background-color: var(--green-200) !important;
 }
 
 #queryTypeWrapper {
@@ -103,7 +117,7 @@ input:hover {
     padding: 10px;
     display: flex;
     align-items: center;
-    cursor: url("/images/icons8-hand-cursor-35.png"), pointer;
+    cursor: url("/images/icons8-natural-user-interface-2-35.png"), pointer;
 }
 
 input#generalEnquiry,
@@ -121,7 +135,7 @@ textarea {
     align-items: center;
     column-gap: 12px;
     margin-bottom: 20px;
-    cursor: url("/images/icons8-hand-cursor-35.png"), pointer;
+    cursor: url("/images/icons8-natural-user-interface-2-35.png"), pointer;
 }
 
 #checkbox-container img {
@@ -137,7 +151,7 @@ textarea {
     border-radius: 8px;
     font-size: 18px;
     font-weight: bold;
-    cursor: url("/images/icons8-hand-cursor-35.png"), pointer;
+    cursor: url("/images/icons8-natural-user-interface-2-35.png"), pointer;
     margin-top: 12px;
     border: none;
 }
@@ -215,20 +229,6 @@ textarea.inputError {
     margin-top: 10px;
 }
 
-input[type="text"].first-name,
-input[type="text"].last-Name,
-input[type="email"].email,
-.query-selected,
-.message,
-.check-box {
-    border: 1px solid var(--green-600) !important;
-
-}
-
-.query-selected {
-    background-color: var(--green-200) !important;
-}
-
 
 @media (max-width: 971px) {
     form {
@@ -249,6 +249,10 @@ input[type="email"].email,
     #queryTypeOptions {
         flex-direction: column;
         row-gap: 10px;
+    }
+
+    #queryTypeOptions img {
+        width: 40px;
     }
 
     #generalEnquiry,
