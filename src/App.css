@@ -15,7 +15,6 @@
     box-sizing: border-box;
     font-family: "Karla", sans-serif;
     font-size: 16px;
-
 }
 
 body {
@@ -44,6 +43,7 @@ h1 {
     align-items: center;
     column-gap: 10px;
     width: 100%;
+    margin-bottom: 25px;
 }
 
 #firstName,
@@ -51,6 +51,7 @@ h1 {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    height: 72px;
 }
 
 label {
@@ -214,10 +215,9 @@ textarea.inputError {
     margin-top: 10px;
 }
 
-
-.first-name,
-.last-Name,
-.email,
+input[type="text"].first-name,
+input[type="text"].last-Name,
+input[type="email"].email,
 .query-selected,
 .message,
 .check-box {
@@ -229,10 +229,6 @@ textarea.inputError {
     background-color: var(--green-200) !important;
 }
 
-/* .generalEnquiryError,
-.supportRequestError {
-    border: 1px solid var(--red) !important;
-} */
 
 @media (max-width: 971px) {
     form {
@@ -242,6 +238,12 @@ textarea.inputError {
 
     #fullName {
         flex-direction: column;
+        margin: 0;
+    }
+
+    #firstName,
+    #lastName {
+        height: auto;
     }
 
     #queryTypeOptions {
