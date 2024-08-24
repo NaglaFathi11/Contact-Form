@@ -79,6 +79,36 @@ function App() {
     setFormInputs({ ...formInputs, [name]: value });
   }
 
+  // الدالة الجديدة للتحقق من صحة الحقل المعين فقط
+  // async function validateField(fieldName, value) {
+  //   try {
+  //     // إنشاء كائن مؤقت للتحقق
+  //     const tempFormInputs = { ...formInputs, [fieldName]: value };
+  //     // التحقق من الحقل باستخدام Yup
+  //     await userSchema.validateAt(fieldName, tempFormInputs);
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       [fieldName]: null, // إذا كان الحقل صحيحًا، قم بإزالة رسالة الخطأ
+  //     }));
+  //   } catch (error) {
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       [fieldName]: error.message, // إذا كان الحقل غير صحيح، أضف رسالة الخطأ
+  //     }));
+  //   }
+  // }
+
+  // function handleOnChange(event) {
+  //   const value = event.target.value;
+  //   const name = event.target.name;
+
+  //   // تحديث قيم الـ inputs
+  //   setFormInputs({ ...formInputs, [name]: value });
+
+  //   // التحقق من صحة الحقل المعين فقط عند تغييره
+  //   validateField(name, value);
+  // }
+
   // Handle Checkbox input value
   function handleCheckboxValue(event) {
     const checkValue = event.target.checked;
@@ -103,16 +133,14 @@ function App() {
         //   console.error("Error");
         // }
       } catch (error) {
-        console.error("Error is:", error);
+        console.error(error);
       }
     }
 
     saveData();
-
   }, [isSubmitted, formInputs]);
 
   return (
-    
     <form onSubmit={handleSubmitForm}>
       <h1>Contact Us</h1>
       <div id="fullName">
@@ -124,7 +152,7 @@ function App() {
             value={formInputs.firstName}
             name="firstName"
             onChange={handleOnChange}
-            className={errors.firstName ? "inputError" : ""}
+            className={errors.firstName ? "inputError" : "first-name"}
           />
           {errors.firstName ? (
             <p className="error">{errors.firstName}</p>
@@ -138,7 +166,7 @@ function App() {
             value={formInputs.lastName}
             name="lastName"
             onChange={handleOnChange}
-            className={errors.lastName ? "inputError" : ""}
+            className={errors.lastName ? "inputError" : "last-Name"}
           />
           {errors.lastName ? <p className="error">{errors.lastName}</p> : null}
         </div>
@@ -154,10 +182,18 @@ function App() {
       />
       {errors.email ? <p className="error">{errors.email}</p> : null}
 
+      {/* //////////////////////////////////////////// */}
       <div id="queryTypeWrapper" className="radio-container">
         <label htmlFor="generalEnquiry">Query Type</label>
         <div id="queryTypeOptions">
-          <div id="generalEnquiry">
+          <div
+            id="generalEnquiry"
+            className={
+              formInputs.queryType === "General Enquiry"
+                ? "query-selected"
+                : "generalEnquiryError"
+            }
+          >
             {formInputs.queryType === "General Enquiry" ? (
               <img
                 src="/images/icon-radio-selected.svg"
@@ -177,7 +213,14 @@ function App() {
               General Enquiry
             </label>
           </div>
-          <div id="supportRequest">
+          <div
+            id="supportRequest"
+            className={
+              formInputs.queryType === "Support Request"
+                ? "query-selected"
+                : "supportRequestError"
+            }
+          >
             {formInputs.queryType === "Support Request" ? (
               <img
                 src="/images/icon-radio-selected.svg"
@@ -200,6 +243,8 @@ function App() {
         </div>
         {errors.queryType ? <p className="error">{errors.queryType}</p> : null}
       </div>
+      {/* //////////////////////////////////////////// */}
+
       <div id="message">
         <label htmlFor="message">Message</label>
         <textarea
@@ -225,6 +270,7 @@ function App() {
             id="isCheck"
             onChange={handleCheckboxValue}
             checked={formInputs.isCheck}
+            className={errors.isCheck ? "checkboxError" : "check-box"}
           />
         )}
         <label htmlFor="isCheck">

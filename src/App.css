@@ -146,7 +146,7 @@ textarea {
 }
 
 .error {
-    color: #e53935;
+    color: var(--red);
     font-size: 14px;
     margin-top: -15px;
     margin-bottom: 15px;
@@ -164,7 +164,7 @@ label.no-asterisk::after {
 input[type="text"].inputError,
 input[type="email"].inputError,
 textarea.inputError {
-    border: 1px solid #e53935;
+    border: 1px solid var(--red);
 }
 
 
@@ -214,6 +214,25 @@ textarea.inputError {
     margin-top: 10px;
 }
 
+
+.first-name,
+.last-Name,
+.email,
+.query-selected,
+.message,
+.check-box {
+    border: 1px solid var(--green-600) !important;
+
+}
+
+.query-selected {
+    background-color: var(--green-200) !important;
+}
+
+/* .generalEnquiryError,
+.supportRequestError {
+    border: 1px solid var(--red) !important;
+} */
 
 @media (max-width: 971px) {
     form {
