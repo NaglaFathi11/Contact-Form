@@ -154,7 +154,7 @@ textarea {
 
 label::after {
     content: " *";
-    color: #e53935;
+    color: var(--green-600);
 }
 
 label.no-asterisk::after {
