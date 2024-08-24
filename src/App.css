@@ -185,7 +185,8 @@ textarea.inputError {
     top: 140px;
     opacity: 0;
     animation-name: success;
-    animation-duration: 3s;
+    animation-duration: 2s;
+    animation-timing-function: ease-out;
 }
 
 
