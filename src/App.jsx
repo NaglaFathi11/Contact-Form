@@ -41,9 +41,8 @@ function App() {
   function handleSubmitForm(event) {
     event.preventDefault();
     testValdiation();
-
+    console.log(formInputs);
     setFormInputs(formInputs);
-
     // Clear Values from inputs after submission
     // setFormInputs({
     //   firstName: "",
@@ -88,31 +87,32 @@ function App() {
 
   // Save data in the db.json file
   useEffect(() => {
-    const saveData = async () => {
-      if (!isSubmitted) return; // عدم إرسال البيانات إذا لم يتم تقديم النموذج بنجاح
-
+    async function saveData() {
+      if (isSubmitted == false) return;
       try {
-        const response = await fetch("http://localhost:3001/formInputsValue", {
+        await fetch("http://localhost:3001/formInputsValue", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formInputs),
         });
-        if (response.ok) {
-          // console.log("Data saved successfully!");
-        } else {
-          console.error("Error saving data!");
-        }
+        // if (response.ok) {
+        // console.log("Data Saved");
+        // } else {
+        //   console.error("Error");
+        // }
       } catch (error) {
-        console.error("Network error:", error);
+        console.error("Error is:", error);
       }
-    };
+    }
 
     saveData();
-  }, [isSubmitted, formInputs]); // اعتمادًا على isSubmitted بدلاً من formInputs
+
+  }, [isSubmitted, formInputs]);
 
   return (
+    
     <form onSubmit={handleSubmitForm}>
       <h1>Contact Us</h1>
       <div id="fullName">
