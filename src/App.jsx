@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import * as yup from "yup";
 
 function App() {
@@ -27,10 +27,12 @@ function App() {
       .oneOf(
         ["General Enquiry", "Support Request"],
         "Please select a query type"
-      ),
+      )
+      .required("This field is required"),
     isCheck: yup
       .boolean()
-      .oneOf([true], "To submit this form, please consent to being contacted"),
+      .oneOf([true], "To submit this form, please consent to being contacted")
+      .required("This field is required"),
   });
 
   // State to track if the form was submitted successfully
@@ -38,37 +40,50 @@ function App() {
   const [errors, setErrors] = useState({});
 
   // Submit the form
-  function handleSubmissionForm(event) {
+  async function handleSubmissionForm(event) {
     event.preventDefault();
-    testValdiation();
-    console.log(formInputs);
-    setFormInputs(formInputs);
-    // Clear Values from inputs after submission
-    // setFormInputs({
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   message: "",
-    //   queryType: "",
-    //   isCheck: false,
-    // });
-  }
 
-  // Test Validation function
-  async function testValdiation() {
     try {
-      await userSchema.validate(formInputs, {
-        abortEarly: false, // Validate all fields and not stop at the first error
-      });
+      // Validate the entire form inputs
+      await userSchema.validate(formInputs, { abortEarly: false });
       setErrors({}); // Clear errors if validation is successful
       setIsSubmitted(true);
+
+      // Save data in the db.json file if validation passes
+      await saveData();
+
+      // Clear Values from inputs after submission
+      setFormInputs({
+        firstName: "",
+        lastName: "",
+        email: "",
+        message: "",
+        queryType: "",
+        isCheck: false,
+      });
     } catch (error) {
-      // Construct a validation errors object
+      // Set validation errors if validation fails
       const validationErrors = {};
       error.inner.forEach((err) => {
         validationErrors[err.path] = err.message;
       });
-      setErrors(validationErrors); // Set validation errors
+      setErrors(validationErrors);
+      setIsSubmitted(false); // Prevent submission if there are validation errors
+    }
+  }
+
+  // Function to save data in the db.json file
+  async function saveData() {
+    try {
+      await fetch("http://localhost:3001/formInputsValue", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formInputs),
+      });
+    } catch (error) {
+      console.error("Error saving data:", error);
     }
   }
 
@@ -77,69 +92,29 @@ function App() {
     const value = event.target.value;
     const name = event.target.name;
     setFormInputs({ ...formInputs, [name]: value });
+
+    // Validate field after user input
+    validateField(name, value);
   }
 
-  // الدالة الجديدة للتحقق من صحة الحقل المعين فقط
-  // async function validateField(fieldName, value) {
-  //   try {
-  //     // إنشاء كائن مؤقت للتحقق
-  //     const tempFormInputs = { ...formInputs, [fieldName]: value };
-  //     // التحقق من الحقل باستخدام Yup
-  //     await userSchema.validateAt(fieldName, tempFormInputs);
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       [fieldName]: null, // إذا كان الحقل صحيحًا، قم بإزالة رسالة الخطأ
-  //     }));
-  //   } catch (error) {
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       [fieldName]: error.message, // إذا كان الحقل غير صحيح، أضف رسالة الخطأ
-  //     }));
-  //   }
-  // }
-
-  // function handleOnChange(event) {
-  //   const value = event.target.value;
-  //   const name = event.target.name;
-
-  //   // تحديث قيم الـ inputs
-  //   setFormInputs({ ...formInputs, [name]: value });
-
-  //   // التحقق من صحة الحقل المعين فقط عند تغييره
-  //   validateField(name, value);
-  // }
-
   // Handle Checkbox input value
-
   function handleCheckboxValue(event) {
     const checkValue = event.target.checked;
     setFormInputs({ ...formInputs, isCheck: checkValue });
+
+    // Validate field after user input
+    validateField("isCheck", checkValue);
   }
 
-  // Save data in the db.json file
-  useEffect(() => {
-    async function saveData() {
-      if (isSubmitted == false) return;
-      try {
-        await fetch("http://localhost:3001/formInputsValue", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formInputs),
-        });
-        // if (response.ok) {
-        // console.log("Data Saved");
-        // } else {
-        //   console.error("Error");
-        // }
-      } catch (error) {
-        console.error(error);
-      }
+  // Validate field function
+  async function validateField(name, value) {
+    try {
+      await userSchema.validateAt(name, { [name]: value });
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: null }));
+    } catch (error) {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: error.message }));
     }
-
-    saveData();
-  }, [isSubmitted, formInputs]);
+  }
 
   return (
     <form onSubmit={handleSubmissionForm}>
@@ -183,7 +158,6 @@ function App() {
       />
       {errors.email ? <p className="error">{errors.email}</p> : null}
 
-      {/* //////////////////////////////////////////// */}
       <div id="queryTypeWrapper" className="radio-container">
         <label htmlFor="generalEnquiry">Query Type</label>
         <div id="queryTypeOptions">
@@ -244,7 +218,6 @@ function App() {
         </div>
         {errors.queryType ? <p className="error">{errors.queryType}</p> : null}
       </div>
-      {/* //////////////////////////////////////////// */}
 
       <div id="message">
         <label htmlFor="message">Message</label>
@@ -283,7 +256,7 @@ function App() {
       <button id="btnSubmit" type="submit">
         Submit
       </button>
-      {/* Display success message if the form is submitted successfully */}
+
       {isSubmitted ? (
         <div id="wrapper">
           <div id="messageSentWrapper" className={isSubmitted ? "show" : ""}>
